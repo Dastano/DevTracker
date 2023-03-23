@@ -15,11 +15,11 @@ import discord
 #   If you want to use IDs, make sure "useRoleIDs" is True
 #
 # Example with Names:
-# [{'role': 'Developer', 'channels': [ 1088231599025422356, 1088231613298647101]}]
+# [{'role': 'Developer', 'channels': [ 1088231599025422356, 1088231613298647101], 'blacklistedChannels':[]}]
 #
 #
-# Example with IDs:
-# rolesToWatch = [{'role': 1088148992514338836, 'channels': [ 1088231599025422356, 1088231613298647101]}]
+# Example with IDs: rolesToWatch = [{'role': 1088148992514338836, 'channels': [ 1088231599025422356,
+# 1088231613298647101], 'blacklistedChannels':[]}]
 #
 #
 #
@@ -31,16 +31,16 @@ import discord
 TOKEN = '<Your token here>'
 useRoleIds = True
 
-rolesToWatch = [{'role': 1088148992514338836, 'channels': [1088231599025422356, 1088231613298647101]},
-                {'role': 662383376115957770, 'channels': [1088231675605033040]}]
+rolesToWatch = [{'role': 1088148992514338836, 'channels': [1088231599025422356, 1088231613298647101], 'blacklistedChannels':[662383121689477151, 362646267974647820]},
+                {'role': 662383376115957770, 'channels': [1088231675605033040], 'blacklistedChannels':[]}]
 
 
 def search(role, message):
     if useRoleIds:
         for p in message.author.roles:
             if int(p.id) == role:
-                return True;
-        return False;
+                return True
+        return False
     else:
         for p in message.author.roles:
             if str(p) == role.strip():
@@ -63,6 +63,12 @@ def run_discord_bot():
         if message.author == client.user:
             return
         for item in rolesToWatch:
+            # check if the Channel is Blacklisted
+            for channelId in item.get('blacklistedChannels'):
+                if channelId == int(message.channel.id):
+                    print('Forbidden channel, do not track')
+                    return
+            # check for Role and copy message
             if search(item.get('role'), message):
                 channels = item.get('channels')
                 for cn in channels:
@@ -70,8 +76,9 @@ def run_discord_bot():
                     embed = discord.Embed(
                         description=message.content,
                         color=discord.Color.blue())
-                    embed.set_author(name=str(message.author)[:-5], # remove [:5] if you want to keep the full Discord ID
-                                     icon_url="<icon url here>") # URL to your Icon
+                    embed.set_author(name=str(message.author)[:-5],  # remove [:5] if you want to keep the full
+                                     # Discord ID
+                                     icon_url="<icon url here>")  # URL to your Icon
                     embed.set_thumbnail(url=message.author.avatar)
                     embed.add_field(name="Jump to Original Message:", value="[View](" + message.jump_url + ")", inline=False)
                     await channel.send(embed=embed)

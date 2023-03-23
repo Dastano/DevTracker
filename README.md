@@ -4,6 +4,7 @@
 
 - Tracks Messages of a specific Role Name or ID
 - Post Messages of tracked roles in channel(s) you like!
+- Blacklist Channels you do not want to be tracked
 
 ### Example
 
@@ -19,7 +20,7 @@ https://pypi.org/project/discord.py/
     2. Modify rolesToWatch to your needs
     3. Set useRoleIds to either True or False, depending on your rolesToWatch Setup.
     4. Change the Icon URL on Line 74
-
+    5. Modify the Channel Blocklist, to stop tracking Private channels.
     For more Details, check examples.
 
 ### Examples
@@ -29,12 +30,12 @@ https://pypi.org/project/discord.py/
 ````python
 TOKEN = '12512515.5125125' # example
 useRoleIds = True
-rolesToWatch = [{'role': 1088148992514338836, 'channels': [ 1088231599025422356, 1088231613298647101]}]
+rolesToWatch = [{'role': 1088148992514338836, 'channels': [ 1088231599025422356, 1088231613298647101], 'blacklistedChannels':[]}]
 
 
 TOKEN = '12512515.5125125' # example
 useRoleIds = False
-rolesToWatch =[{'role': 'Developer', 'channels': [ 1088231599025422356, 1088231613298647101]},{'role': 'TestRole', 'channels': [ 1088231599025422356]}]
+rolesToWatch =[{'role': 'Developer', 'channels': [ 1088231599025422356, 1088231613298647101]},{'role': 'TestRole', 'channels': [ 1088231599025422356], 'blacklistedChannels':[]}]
 ````
 
 ### Others
