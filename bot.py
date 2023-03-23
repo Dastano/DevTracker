@@ -31,8 +31,9 @@ import discord
 TOKEN = '<Your token here>'
 useRoleIds = True
 
-rolesToWatch = [{'role': 1088148992514338836, 'channels': [1088231599025422356, 1088231613298647101], 'blacklistedChannels':[662383121689477151, 362646267974647820]},
-                {'role': 662383376115957770, 'channels': [1088231675605033040], 'blacklistedChannels':[]}]
+rolesToWatch = [{'role': 1088148992514338836, 'channels': [1088231599025422356, 1088231613298647101],
+                 'blacklistedChannels': [662383121689477151, 362646267974647820]},
+                {'role': 662383376115957770, 'channels': [1088231675605033040], 'blacklistedChannels': []}]
 
 
 def search(role, message):
@@ -47,6 +48,14 @@ def search(role, message):
                 print("true")
                 return True
         return False
+
+
+def checkblacklist(channelid, channels):
+    for channel in channels:
+        if channel == int(channelid):
+            print('Forbidden channel, do not track')
+            return True
+    return False
 
 
 def run_discord_bot():
@@ -64,10 +73,8 @@ def run_discord_bot():
             return
         for item in rolesToWatch:
             # check if the Channel is Blacklisted
-            for channelId in item.get('blacklistedChannels'):
-                if channelId == int(message.channel.id):
-                    print('Forbidden channel, do not track')
-                    return
+            if checkblacklist(int(message.channel.id), item.get('blacklistedChannels')):
+                return
             # check for Role and copy message
             if search(item.get('role'), message):
                 channels = item.get('channels')
@@ -80,6 +87,8 @@ def run_discord_bot():
                                      # Discord ID
                                      icon_url="<icon url here>")  # URL to your Icon
                     embed.set_thumbnail(url=message.author.avatar)
-                    embed.add_field(name="Jump to Original Message:", value="[View](" + message.jump_url + ")", inline=False)
+                    embed.add_field(name="Jump to Original Message:", value="[View](" + message.jump_url + ")",
+                                    inline=False)
                     await channel.send(embed=embed)
+
     client.run(TOKEN)
