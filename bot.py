@@ -28,7 +28,7 @@ import discord
 # Chapter: Multiline Code Blocks
 
 
-TOKEN = '<Your Token Here>'
+TOKEN = '<Your token here>'
 useRoleIds = True
 
 rolesToWatch = [{'role': 1088148992514338836, 'channels': [1088231599025422356, 1088231613298647101]},
@@ -70,9 +70,8 @@ def run_discord_bot():
                     embed = discord.Embed(
                         description=message.content,
                         color=discord.Color.blue())
-                    embed.set_author(name=str(message.author)[:-5],
-                                     icon_url="https://playpaxdei.com/_next/image?url=%2Fstatic%2Fimages%2Fpaxdei"
-                                              "-monogram-silver.png&w=64&q=75")
+                    embed.set_author(name=str(message.author)[:-5], # remove [:5] if you want to keep the full Discord ID
+                                     icon_url="<icon url here>") # URL to your Icon
                     embed.set_thumbnail(url=message.author.avatar)
                     embed.add_field(name="Jump to Original Message:", value="[View](" + message.jump_url + ")", inline=False)
                     await channel.send(embed=embed)
