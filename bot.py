@@ -75,12 +75,4 @@ def run_discord_bot():
                     embed.set_thumbnail(url=message.author.avatar)
                     embed.add_field(name="Jump to Original Message:", value="[View](" + message.jump_url + ")", inline=False)
                     await channel.send(embed=embed)
-        if message.content.startswith('hi'):
-            await message.channel.send('Hello!')
-
-        username = str(message.author)
-        user_message = str(message.content)
-        channel = str(message.channel.id)
-        print(f"{username} said: '{user_message}' ({channel})")
-
     client.run(TOKEN)
