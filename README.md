@@ -18,6 +18,7 @@ https://pypi.org/project/discord.py/
     1. Replace <Token here> with your Discord Bot Token without <> in bot.py
     2. Modify rolesToWatch to your needs
     3. Set useRoleIds to either True or False, depending on your rolesToWatch Setup.
+    4. Change the Icon URL on Line 74
 
     For more Details, check examples.
 
