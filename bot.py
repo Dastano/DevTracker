@@ -21,7 +21,7 @@ import discord
 # Example with IDs: rolesToWatch = [{'role': 1088148992514338836, 'channels': [ 1088231599025422356,
 # 1088231613298647101], 'blacklistedChannels':[]}]
 #
-#
+# NEW! Use Keyword, to track messages. Add the Keyword INFRONT of your message, to make sure it gets tracked.
 #
 # To Modify the Style of the Message
 # I recommend reading: https://python.plainenglish.io/python-discord-bots-formatting-text-efca0c5dc64a
@@ -30,6 +30,8 @@ import discord
 
 TOKEN = '<Your token here>'
 useRoleIds = True
+keyword = '!dt'
+useKeyword = True
 
 rolesToWatch = [{'role': 1088148992514338836, 'channels': [1088231599025422356, 1088231613298647101],
                  'blacklistedChannels': [662383121689477151, 362646267974647820]},
@@ -45,7 +47,6 @@ def search(role, message):
     else:
         for p in message.author.roles:
             if str(p) == role.strip():
-                print("true")
                 return True
         return False
 
@@ -55,6 +56,12 @@ def checkblacklist(channelid, channels):
         if channel == int(channelid):
             print('Forbidden channel, do not track')
             return True
+    return False
+
+
+def notContainsKeyword(message):
+    if keyword not in message.content or not message.content.startswith(keyword):
+        return True
     return False
 
 
@@ -69,6 +76,8 @@ def run_discord_bot():
 
     @client.event
     async def on_message(message):
+        print("message recieved")
+        alreadyReplaced = False
         if message.author == client.user:
             return
         for item in rolesToWatch:
@@ -79,9 +88,15 @@ def run_discord_bot():
             if search(item.get('role'), message):
                 channels = item.get('channels')
                 for cn in channels:
+                    if useKeyword and notContainsKeyword(message):
+                        return
+                    elif not alreadyReplaced:
+                        print("in else")
+                        messageCopy = message.content.replace(keyword, "", 1)
+                        alreadyReplaced = True
                     channel = client.get_channel(cn)
                     embed = discord.Embed(
-                        description=message.content,
+                        description=messageCopy,
                         color=discord.Color.blue())
                     embed.set_author(name=str(message.author)[:-5],  # remove [:5] if you want to keep the full
                                      # Discord ID
@@ -90,5 +105,4 @@ def run_discord_bot():
                     embed.add_field(name="Jump to Original Message:", value="[View](" + message.jump_url + ")",
                                     inline=False)
                     await channel.send(embed=embed)
-
     client.run(TOKEN)

@@ -2,9 +2,10 @@
 
 ### Features
 
-- Tracks Messages of a specific Role Name or ID
+- Tracking Messages of a specific Role Name or ID
 - Post Messages of tracked roles in channel(s) you like!
 - Blacklist Channels you do not want to be tracked
+- Use Keyword to make sure, only important messages are tracked
 
 ### Example
 
@@ -20,7 +21,8 @@ https://pypi.org/project/discord.py/
     2. Modify rolesToWatch to your needs
     3. Set useRoleIds to either True or False, depending on your rolesToWatch Setup.
     4. Change the Icon URL on Line 74
-    5. Modify the Channel Blocklist, to stop tracking Private channels.
+    5. Set Keyword to true/false and add the Keyword you like.
+    6. Modify the Channel Blocklist, to stop tracking Private channels.
     For more Details, check examples.
 
 ### Examples
@@ -32,6 +34,8 @@ TOKEN = '12512515.5125125' # example
 useRoleIds = True
 rolesToWatch = [{'role': 1088148992514338836, 'channels': [ 1088231599025422356, 1088231613298647101], 'blacklistedChannels':[]}]
 
+keyword = '!dt' # example
+useKeyword = True
 
 TOKEN = '12512515.5125125' # example
 useRoleIds = False
